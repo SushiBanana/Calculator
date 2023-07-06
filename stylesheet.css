@@ -87,6 +87,10 @@ button:hover {
     background-color: #ea8c79;
 }
 
-.number.AC{
+.AC{
     background-color: #f2c862;
+}
+
+.fas {
+    padding: none;
 }
