@@ -1,13 +1,20 @@
+@font-face {
+    font-family: "Poppins";
+    src: url(font/Poppins-Medium.ttf);
+}
+
 body {
     height: 98vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: "Poppins";
+    background-color: #f5faff;
 }
 
 .calculator-container {
     height: 40rem;
-    width: 28rem;
+    width: 25rem;
     border: 5px solid black;
     border-radius: 15px;
     display: flex;
@@ -19,13 +26,18 @@ body {
     border-bottom: 5px solid black;
     height: 2rem;
     flex: 1 1 auto;
-    
 }
 
 .calculator-display {
     border-bottom: 5px solid black;
     height: 5rem;
     flex: 2 1 auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 1.5rem;
+    font-size: 40px;
+    overflow: hidden;
 }
 
 .buttons-container {
@@ -46,10 +58,35 @@ button {
     height: 5rem;
     width: 5rem;
     border-radius: 100%;
-    border: 3px black;
+    border: 0px;
+    background-color: #cbcfd3;
+    box-shadow: 3px 5px 5px rgb(167, 166, 166);
+    font-family: "Poppins";
+
+}
+
+button.number {
+    font-weight: 530;
 }
 
 button:hover {
     color: white;
     background-color: gray;
+    box-shadow: none;
+    transition: all 0.2s
+}
+
+.divide-button,
+.times-button,
+.minus-button,
+.plus-button {
+    background-color: #90d2bf;
+}
+
+.equals-button {
+    background-color: #ea8c79;
+}
+
+.number.AC{
+    background-color: #f2c862;
 }
