@@ -10,6 +10,7 @@ const equalsButton = document.querySelector(".equals-button")
 const equations = document.querySelector(".equations")
 
 let displayEquation = "";
+let equalsCounter = 0;
 
 function createGlobalEventListener(type, selector, callback) {
     buttonsContainer.addEventListener(type, e => {
@@ -36,6 +37,7 @@ acButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
         clearDisplay();
         displayEquation = "";
+        reset();
     }
 })
 
@@ -60,9 +62,9 @@ timesButton.addEventListener("click", e => {
 minusButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
         let displayer = document.createElement("div");
-        displayer.textContent = "-";
+        displayer.textContent = "–";
         calculatorDisplay.appendChild(displayer);
-        displayEquation += "-";
+        displayEquation += "–";
     }
 })
 
@@ -77,12 +79,29 @@ plusButton.addEventListener("click", e => {
 
 equalsButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
-        operate();
+        equalsCounter++;
         clearDisplay();
-        appendAnswer();
+        
+
+        if (equalsCounter === 1) {
+            
+            operate();
+            appendAnswer();
+            
+        }
+
         displayEquation = "";
         a = finalAnswer;
         displayEquation += a;
+        
+
+        if(equalsCounter === 2) {
+            displayEquation = `${displayEquation}${opr}${b}`;
+            operate();
+            appendAnswer();
+
+            equalsCounter--;
+        }
     }
 })
 
@@ -119,7 +138,7 @@ let finalAnswer = "";
 function operate() {
     getIndexOf("÷");
     getIndexOf("×");
-    getIndexOf("-");
+    getIndexOf("–");
     getIndexOf("+");
     getAnswer();
 }
@@ -143,7 +162,7 @@ function getAnswer() {
             finalAnswer = times(a,b);
             break;
 
-        case "-":
+        case "–":
             finalAnswer = minus(a,b);
             break;
 
@@ -169,3 +188,11 @@ function plus(a,b) {
     return +a + +b;
 }
 
+function reset () {
+    a = "";
+    b = "";
+    opr = "";
+    index = "";
+    finalAnswer = "";
+    equalsCounter = "";
+}
