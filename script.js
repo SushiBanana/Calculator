@@ -7,6 +7,7 @@ const minusButton = document.querySelector(".minus-button")
 const plusButton = document.querySelector(".plus-button")
 const acButton = document.querySelector(".AC")
 const equalsButton = document.querySelector(".equals-button")
+const equations = document.querySelector(".equations")
 
 let displayEquation = "";
 
@@ -17,11 +18,11 @@ function createGlobalEventListener(type, selector, callback) {
 }
 
 createGlobalEventListener("click", ".number", e => {
-    let numberValue = e.target.textContent
-    let displayer = document.createElement("div")
-    displayer.textContent = numberValue
-    calculatorDisplay.appendChild(displayer)
-    displayEquation += numberValue
+    let numberValue = e.target.textContent;
+    let displayer = document.createElement("div");
+    displayer.textContent = numberValue;
+    calculatorDisplay.appendChild(displayer);
+    displayEquation += numberValue;
 })
 
 backspaceButton.addEventListener("click", e => {
@@ -33,57 +34,80 @@ backspaceButton.addEventListener("click", e => {
 
 acButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
-        while (calculatorDisplay.firstChild) {
-            calculatorDisplay.removeChild(calculatorDisplay.lastChild)
-        }
+        clearDisplay();
         displayEquation = "";
     }
 })
 
 divideButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
-        let displayer = document.createElement("div")
-        displayer.textContent = "÷"
-        calculatorDisplay.appendChild(displayer)
-        displayEquation += "÷"
+        let displayer = document.createElement("div");
+        displayer.textContent = "÷";
+        calculatorDisplay.appendChild(displayer);
+        displayEquation += "÷";
     }
 })
 
 timesButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
-        let displayer = document.createElement("div")
-        displayer.textContent = "×"
-        calculatorDisplay.appendChild(displayer)
-        displayEquation += "×"
+        let displayer = document.createElement("div");
+        displayer.textContent = "×";
+        calculatorDisplay.appendChild(displayer);
+        displayEquation += "×";
     }
 })
 
 minusButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
-        let displayer = document.createElement("div")
-        displayer.textContent = "-"
-        calculatorDisplay.appendChild(displayer)
-        displayEquation += "-"
+        let displayer = document.createElement("div");
+        displayer.textContent = "-";
+        calculatorDisplay.appendChild(displayer);
+        displayEquation += "-";
     }
 })
 
 plusButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
-        let displayer = document.createElement("div")
-        displayer.textContent = "+"
-        calculatorDisplay.appendChild(displayer)
-        displayEquation += "+"
+        let displayer = document.createElement("div");
+        displayer.textContent = "+";
+        calculatorDisplay.appendChild(displayer);
+        displayEquation += "+";
     }
 })
 
 equalsButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
         operate();
+        clearDisplay();
+        appendAnswer();
+        displayEquation = "";
+        a = finalAnswer;
+        displayEquation += a;
     }
 })
 
+function clearDisplay() {
+    while (calculatorDisplay.firstChild) {
+        calculatorDisplay.removeChild(calculatorDisplay.lastChild);
+    }
+    while (equations.firstChild) {
+        equations.removeChild(equations.lastChild)
+    }
+    
+}
+
 function removeLastDisplay() {
     displayEquation = displayEquation.substring(0, displayEquation.length - 1);
+}
+
+function appendAnswer() {
+    let contentEquation = document.createElement("div");
+    contentEquation.textContent = displayEquation;
+    equations.appendChild(contentEquation);
+
+    let newContent = document.createElement("div");
+    newContent.textContent = finalAnswer;
+    calculatorDisplay.appendChild(newContent);
 }
 
 let a = "";
@@ -144,3 +168,4 @@ function minus(a,b) {
 function plus(a,b) {
     return +a + +b;
 }
+

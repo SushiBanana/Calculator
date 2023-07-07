@@ -26,6 +26,11 @@ body {
     border-bottom: 5px solid black;
     height: 2rem;
     flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0.5rem 0.5rem;
+    font-size: 25px;
 }
 
 .calculator-display {
@@ -94,3 +99,4 @@ button:hover {
 .fas {
     padding: none;
 }
+
