@@ -88,19 +88,59 @@ function removeLastDisplay() {
 
 let a = "";
 let b = "";
+let opr = "";
 let index = "";
+let finalAnswer = "";
 
 function operate() {
     getIndexOf("÷");
     getIndexOf("×");
     getIndexOf("-");
     getIndexOf("+");
+    getAnswer();
 }
 
 function getIndexOf(operator) {
     if (displayEquation.includes(operator)) {
         index = displayEquation.indexOf(operator)
         a = displayEquation.substring(0, index)
+        opr = operator
         b = displayEquation.substring(index + 1, displayEquation.length)
     }
+}
+
+function getAnswer() {
+    switch (opr) {
+        case "÷":
+            finalAnswer = divide(a,b);
+            break;
+
+        case "×":
+            finalAnswer = times(a,b);
+            break;
+
+        case "-":
+            finalAnswer = minus(a,b);
+            break;
+
+        case "+":
+            finalAnswer = plus(a,b);
+            break;
+    }
+}
+
+function divide(a,b) {
+    return a / b;
+}
+
+function times(a,b) {
+    return a * b;
+}
+
+function minus(a,b) {
+    return a - b;
+}
+
+function plus(a,b) {
+    return +a + +b;
 }
