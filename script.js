@@ -8,9 +8,13 @@ const plusButton = document.querySelector(".plus-button")
 const acButton = document.querySelector(".AC")
 const equalsButton = document.querySelector(".equals-button")
 const equations = document.querySelector(".equations")
+const plusMinus = document.querySelector(".plus-minus")
+const percentageButton = document.querySelector(".percentage-button")
 
-let displayEquation = "";
-let equalsCounter = 0;
+let opr = "";
+let lastOpr = "";
+let finalAnswer = 0;
+let storage = "";
 
 function createGlobalEventListener(type, selector, callback) {
     buttonsContainer.addEventListener(type, e => {
@@ -23,7 +27,16 @@ createGlobalEventListener("click", ".number", e => {
     let displayer = document.createElement("div");
     displayer.textContent = numberValue;
     calculatorDisplay.appendChild(displayer);
-    displayEquation += numberValue;
+    updateLastOpr();
+})
+
+percentageButton.addEventListener("click", e => {
+    if (e.target.matches("button") || e.target.matches(".fas")) {
+        let displayer = document.createElement("div")
+        displayer.textContent = "."
+        calculatorDisplay.insertBefore(displayer, calculatorDisplay.childNodes[calculatorDisplay.childNodes.length - 2])
+    }
+        
 })
 
 backspaceButton.addEventListener("click", e => {
@@ -35,8 +48,7 @@ backspaceButton.addEventListener("click", e => {
 
 acButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
-        clearDisplay();
-        displayEquation = "";
+        clearAllDisplay();
         reset();
     }
 })
@@ -46,7 +58,6 @@ divideButton.addEventListener("click", e => {
         let displayer = document.createElement("div");
         displayer.textContent = "÷";
         calculatorDisplay.appendChild(displayer);
-        displayEquation += "÷";
     }
 })
 
@@ -55,7 +66,6 @@ timesButton.addEventListener("click", e => {
         let displayer = document.createElement("div");
         displayer.textContent = "×";
         calculatorDisplay.appendChild(displayer);
-        displayEquation += "×";
     }
 })
 
@@ -64,7 +74,6 @@ minusButton.addEventListener("click", e => {
         let displayer = document.createElement("div");
         displayer.textContent = "–";
         calculatorDisplay.appendChild(displayer);
-        displayEquation += "–";
     }
 })
 
@@ -73,39 +82,10 @@ plusButton.addEventListener("click", e => {
         let displayer = document.createElement("div");
         displayer.textContent = "+";
         calculatorDisplay.appendChild(displayer);
-        displayEquation += "+";
     }
 })
 
-equalsButton.addEventListener("click", e => {
-    if (e.target.matches("button") || e.target.matches(".fas")) {
-        equalsCounter++;
-        clearDisplay();
-        
-
-        if (equalsCounter === 1) {
-            
-            operate();
-            appendAnswer();
-            
-        }
-
-        displayEquation = "";
-        a = finalAnswer;
-        displayEquation += a;
-        
-
-        if(equalsCounter === 2) {
-            displayEquation = `${displayEquation}${opr}${b}`;
-            operate();
-            appendAnswer();
-
-            equalsCounter--;
-        }
-    }
-})
-
-function clearDisplay() {
+function clearAllDisplay() {
     while (calculatorDisplay.firstChild) {
         calculatorDisplay.removeChild(calculatorDisplay.lastChild);
     }
@@ -115,40 +95,67 @@ function clearDisplay() {
     
 }
 
-function removeLastDisplay() {
-    displayEquation = displayEquation.substring(0, displayEquation.length - 1);
+function appendEquation() {
+    let contentEquation = document.createElement("div");
+    contentEquation.textContent = storage;
+    equations.appendChild(contentEquation);
 }
 
 function appendAnswer() {
-    let contentEquation = document.createElement("div");
-    contentEquation.textContent = displayEquation;
-    equations.appendChild(contentEquation);
-
     let newContent = document.createElement("div");
     newContent.textContent = finalAnswer;
     calculatorDisplay.appendChild(newContent);
 }
+equalsButton.addEventListener("click", e => {
+    if (e.target.matches("button") || e.target.matches(".fas")) {
+        if (opr == "") {
+            operate();
+            storeEquation();
+            clearAllDisplay();
+            appendEquation();
+            roundAnswer(finalAnswer);
+            appendAnswer();
 
-let a = "";
-let b = "";
-let opr = "";
-let index = "";
-let finalAnswer = "";
+        } else if (opr === lastOpr) {
+            a = calculatorDisplay.textContent
+            getAnswer();
+            storage = `${a}${opr}${b}`
+            clearAllDisplay();
+            appendEquation();
+            roundAnswer(finalAnswer);
+            appendAnswer();
+
+        } else {
+            operate();
+            storeEquation();
+            clearAllDisplay();
+            appendEquation();
+            roundAnswer(finalAnswer);
+            appendAnswer();
+        }
+    }
+})
+
+function storeEquation() {
+    storage = calculatorDisplay.textContent;
+}
 
 function operate() {
     getIndexOf("÷");
     getIndexOf("×");
     getIndexOf("–");
     getIndexOf("+");
-    getAnswer();
+    getAnswer();   
+
 }
 
 function getIndexOf(operator) {
-    if (displayEquation.includes(operator)) {
-        index = displayEquation.indexOf(operator)
-        a = displayEquation.substring(0, index)
+    if (calculatorDisplay.textContent.includes(operator)) {
+        index = calculatorDisplay.textContent.indexOf(operator)
+        a = calculatorDisplay.textContent.substring(0, index)
         opr = operator
-        b = displayEquation.substring(index + 1, displayEquation.length)
+        lastOpr = operator;
+        b = calculatorDisplay.textContent.substring(index + 1, calculatorDisplay.length)
     }
 }
 
@@ -172,6 +179,22 @@ function getAnswer() {
     }
 }
 
+function roundAnswer(number) {
+    return finalAnswer = +number.toFixed(7);
+}
+
+function reset() {
+    opr = "";
+    lastOpr = "";
+    finalAnswer = "";
+    storage = "";
+}
+
+function updateLastOpr() {
+    if (opr !== "")
+    return lastOpr = 1;
+}
+
 function divide(a,b) {
     return a / b;
 }
@@ -188,11 +211,3 @@ function plus(a,b) {
     return +a + +b;
 }
 
-function reset () {
-    a = "";
-    b = "";
-    opr = "";
-    index = "";
-    finalAnswer = "";
-    equalsCounter = "";
-}
