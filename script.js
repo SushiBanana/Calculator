@@ -8,8 +8,8 @@ const plusButton = document.querySelector(".plus-button")
 const acButton = document.querySelector(".AC")
 const equalsButton = document.querySelector(".equals-button")
 const equations = document.querySelector(".equations")
-const plusMinus = document.querySelector(".plus-minus")
 const percentageButton = document.querySelector(".percentage-button")
+const dot = document.querySelector(".dot")
 
 let opr = "";
 let lastOpr = "";
@@ -30,11 +30,21 @@ createGlobalEventListener("click", ".number", e => {
     updateLastOpr();
 })
 
+createGlobalEventListener("click", ".dot", e => {
+    let numberValue = e.target.textContent;
+    let displayer = document.createElement("div");
+    displayer.textContent = numberValue;
+    calculatorDisplay.appendChild(displayer);
+    updateLastOpr();
+    disablePercentageDot()
+})
+
 percentageButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
         let displayer = document.createElement("div")
         displayer.textContent = "."
         calculatorDisplay.insertBefore(displayer, calculatorDisplay.childNodes[calculatorDisplay.childNodes.length - 2])
+        disablePercentageDot();
     }
         
 })
@@ -42,7 +52,6 @@ percentageButton.addEventListener("click", e => {
 backspaceButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
         calculatorDisplay.removeChild(calculatorDisplay.lastChild)
-        removeLastDisplay();
     }
 })
 
@@ -50,6 +59,7 @@ acButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
         clearAllDisplay();
         reset();
+        enableOperators();
     }
 })
 
@@ -58,6 +68,7 @@ divideButton.addEventListener("click", e => {
         let displayer = document.createElement("div");
         displayer.textContent = "÷";
         calculatorDisplay.appendChild(displayer);
+        disableOperator();
     }
 })
 
@@ -66,6 +77,7 @@ timesButton.addEventListener("click", e => {
         let displayer = document.createElement("div");
         displayer.textContent = "×";
         calculatorDisplay.appendChild(displayer);
+        disableOperator();
     }
 })
 
@@ -74,6 +86,8 @@ minusButton.addEventListener("click", e => {
         let displayer = document.createElement("div");
         displayer.textContent = "–";
         calculatorDisplay.appendChild(displayer);
+        disableOperator();
+
     }
 })
 
@@ -82,6 +96,7 @@ plusButton.addEventListener("click", e => {
         let displayer = document.createElement("div");
         displayer.textContent = "+";
         calculatorDisplay.appendChild(displayer);
+        disableOperator();
     }
 })
 
@@ -92,7 +107,6 @@ function clearAllDisplay() {
     while (equations.firstChild) {
         equations.removeChild(equations.lastChild)
     }
-    
 }
 
 function appendEquation() {
@@ -101,10 +115,15 @@ function appendEquation() {
     equations.appendChild(contentEquation);
 }
 
+
 function appendAnswer() {
-    let newContent = document.createElement("div");
-    newContent.textContent = finalAnswer;
-    calculatorDisplay.appendChild(newContent);
+    let string = finalAnswer.toString()
+    let array = string.split("")
+    array.forEach(e => {
+        let newContent = document.createElement("div");
+        newContent.textContent = e;
+        calculatorDisplay.appendChild(newContent);
+    })
 }
 equalsButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
@@ -115,6 +134,7 @@ equalsButton.addEventListener("click", e => {
             appendEquation();
             roundAnswer(finalAnswer);
             appendAnswer();
+            enableOperators()
 
         } else if (opr === lastOpr) {
             a = calculatorDisplay.textContent
@@ -124,6 +144,7 @@ equalsButton.addEventListener("click", e => {
             appendEquation();
             roundAnswer(finalAnswer);
             appendAnswer();
+            enableOperators()
 
         } else {
             operate();
@@ -132,6 +153,7 @@ equalsButton.addEventListener("click", e => {
             appendEquation();
             roundAnswer(finalAnswer);
             appendAnswer();
+            enableOperators()
         }
     }
 })
@@ -186,7 +208,7 @@ function roundAnswer(number) {
 function reset() {
     opr = "";
     lastOpr = "";
-    finalAnswer = "";
+    finalAnswer = 0;
     storage = "";
 }
 
@@ -209,5 +231,104 @@ function minus(a,b) {
 
 function plus(a,b) {
     return +a + +b;
+}
+
+document.addEventListener("keydown", e => {
+    if (e.key >= 0 || e.key == ".") {
+        let numberValue = e.key;
+        let displayer = document.createElement("div");
+        displayer.textContent = numberValue;
+        calculatorDisplay.appendChild(displayer);
+        updateLastOpr();
+
+    } else if (e.key == "Backspace") {
+        calculatorDisplay.removeChild(calculatorDisplay.lastChild)
+
+    } else if (e.key == "/") {
+        let displayer = document.createElement("div");
+        displayer.textContent = "÷";
+        calculatorDisplay.appendChild(displayer);
+
+    } else if (e.key == "*") {
+        let displayer = document.createElement("div");
+        displayer.textContent = "×";
+        calculatorDisplay.appendChild(displayer);
+
+    } else if (e.key == "-") {
+        e.target.disabled = true
+        let displayer = document.createElement("div");
+        displayer.textContent = "–";
+        calculatorDisplay.appendChild(displayer);
+
+    } else if (e.key == "+") {
+        let displayer = document.createElement("div");
+        displayer.textContent = "+";
+        calculatorDisplay.appendChild(displayer);
+
+    } else if (e.key == "Enter") {
+            if (opr == "") {
+                operate();
+                storeEquation();
+                clearAllDisplay();
+                appendEquation();
+                roundAnswer(finalAnswer);
+                appendAnswer();
+                enableOperators()
+    
+            } else if (opr === lastOpr) {
+                a = calculatorDisplay.textContent
+                getAnswer();
+                storage = `${a}${opr}${b}`
+                clearAllDisplay();
+                appendEquation();
+                roundAnswer(finalAnswer);
+                appendAnswer();
+                enableOperators()
+    
+            } else {
+                operate();
+                storeEquation();
+                clearAllDisplay();
+                appendEquation();
+                roundAnswer(finalAnswer);
+                appendAnswer();
+                enableOperators()
+            }
+        
+
+    } else if (e.key == "%") {
+        let displayer = document.createElement("div")
+        displayer.textContent = "."
+        calculatorDisplay.insertBefore(displayer, calculatorDisplay.childNodes[calculatorDisplay.childNodes.length - 2])
+    }
+})
+
+function disableOperator() {
+    if (calculatorDisplay.textContent.includes("÷") || 
+        calculatorDisplay.textContent.includes("×") ||
+        calculatorDisplay.textContent.includes("–") ||
+        calculatorDisplay.textContent.includes("+")) {
+            divideButton.disabled = true;
+            timesButton.disabled = true;
+            minusButton.disabled = true;
+            plusButton.disabled = true;
+
+        }
+}
+
+function enableOperators() {
+    divideButton.disabled = false;
+    timesButton.disabled = false;
+    minusButton.disabled = false;
+    plusButton.disabled = false;
+    percentageButton.disabled = false;
+    dot.disabled = false;
+}
+
+function disablePercentageDot() {
+    if (calculatorDisplay.textContent.includes(".")) {
+        percentageButton.disabled = true;
+        dot.disabled = true;
+    }
 }
 
