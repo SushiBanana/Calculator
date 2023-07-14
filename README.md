@@ -4,7 +4,8 @@
 > p.s this calculator supports multiple equal presses that uses the previous operator and answer for the next equation.
 
 ### Inspiration
-The design for the project was inspired by my dream mechanical keyboard [_Nuphy Air 96_](https://nuphy.com/cdn/shop/products/NuPhyAir96_Main01_221209_1800x1800.png?v=1683599578). I found the colors to be very soothing and aesthetic. I currently do not own this keyboard but hopefully in the near future I will.
+The design for the project was inspired by my dream mechanical keyboard [_NuPhy Air 96_](https://nuphy.com/cdn/shop/products/NuPhyAir96_Main01_221209_1800x1800.png?v=1683599578). I found the colors to be very soothing and aesthetic. I currently do not own this keyboard but hopefully in the near future I will.
+![Picture of NuPhy Air 96](https://nuphy.com/cdn/shop/products/NuPhyAir96_Main01_221209_1800x1800.png?v=1683599578)
 
 ## Things I wish I knew before starting
 1. Create more functions to make `script.js` less repetitive and more succinct. I had to type in a lot of `eventListeners` which made my code very lengthy.
