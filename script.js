@@ -51,7 +51,7 @@ percentageButton.addEventListener("click", e => {
             displayer.textContent = "0."
             calculatorDisplay.insertBefore(displayer, calculatorDisplay.childNodes[0])
             disablePercentageDot();
-        } else if (calculatorDisplay.childNodes.length == 3 && calculatorDisplay.textContent !== ".") {
+        } else if (calculatorDisplay.childNodes.length >= 3 && calculatorDisplay.textContent !== ".") {
             let displayer = document.createElement("div")
             displayer.textContent = "."
             calculatorDisplay.insertBefore(displayer, calculatorDisplay.childNodes[calculatorDisplay.childNodes.length - 2])
