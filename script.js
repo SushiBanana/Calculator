@@ -41,17 +41,17 @@ createGlobalEventListener("click", ".dot", e => {
 
 percentageButton.addEventListener("click", e => {
     if (e.target.matches("button") || e.target.matches(".fas")) {
-        if (calculatorDisplay.childNodes.length == 1) {
+        if (calculatorDisplay.childNodes.length == 1 && calculatorDisplay.textContent !== ".") {
             let displayer = document.createElement("div")
             displayer.textContent = "0.0"
             calculatorDisplay.insertBefore(displayer, calculatorDisplay.childNodes[0])
             disablePercentageDot();
-        } else if (calculatorDisplay.childNodes.length == 2) {
+        } else if (calculatorDisplay.childNodes.length == 2 && calculatorDisplay.textContent !== ".") {
             let displayer = document.createElement("div")
             displayer.textContent = "0."
             calculatorDisplay.insertBefore(displayer, calculatorDisplay.childNodes[0])
             disablePercentageDot();
-        } else {
+        } else if (calculatorDisplay.childNodes.length == 3 && calculatorDisplay.textContent !== ".") {
             let displayer = document.createElement("div")
             displayer.textContent = "."
             calculatorDisplay.insertBefore(displayer, calculatorDisplay.childNodes[calculatorDisplay.childNodes.length - 2])
